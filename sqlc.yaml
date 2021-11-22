@@ -1,15 +1,60 @@
-version: 1
+version: '1'
 packages:
-  - path: model
-    name: model
-    engine: mysql
-    schema: model/schema/schema.sql
+  - schema: model/schema/schema.sql
     queries: model/sql
+    name: model
+    path: model
+    engine: postgresql
+    sql_package: pgx/v4
     emit_json_tags: true
     emit_interface: true
     json_tags_case_style: "camel"
 
 overrides:
+  - db_type: "pg_catalog.int4"
+    engine: postgresql
+    nullable: true
+    go_type:
+      type: "int"
+      pointer: true
+  - db_type: "pg_catalog.int8"
+    engine: postgresql
+    nullable: true
+    go_type:
+      type: "int"
+      pointer: true
+  - db_type: "pg_catalog.float4"
+    engine: postgresql
+    nullable: true
+    go_type:
+      type: "float32"
+      pointer: true
+  - db_type: "pg_catalog.float8"
+    engine: postgresql
+    nullable: true
+    go_type:
+      type: "float32"
+      pointer: true
+  - db_type: "text"
+    engine: postgresql
+    nullable: true
+    go_type:
+      type: "string"
+      pointer: true
+  - db_type: "pg_catalog.varchar"
+    engine: postgresql
+    nullable: true
+    go_type:
+      type: "string"
+      pointer: true
+  - db_type: "pg_catalog.timestamp"
+    engine: postgresql
+    nullable: true
+    go_type:
+      import: "time"
+      type: "Time"
+      pointer: true
+
   - db_type: "int"
     engine: mysql
     nullable: true
@@ -65,10 +110,4 @@ overrides:
     go_type:
       import: "time"
       type: "Time"
-      pointer: true
-  - db_type: "text"
-    engine: mysql
-    nullable: true
-    go_type:
-      type: "string"
       pointer: true
