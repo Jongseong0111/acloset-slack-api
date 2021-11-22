@@ -1,0 +1,74 @@
+version: 1
+packages:
+  - path: model
+    name: model
+    engine: mysql
+    schema: model/schema/schema.sql
+    queries: model/sql
+    emit_json_tags: true
+    emit_interface: true
+    json_tags_case_style: "camel"
+
+overrides:
+  - db_type: "int"
+    engine: mysql
+    nullable: true
+    go_type:
+      type: "int"
+      pointer: true
+  - db_type: "bigint"
+    engine: mysql
+    nullable: true
+    go_type:
+      type: "int"
+      pointer: true
+  - db_type: "float"
+    engine: mysql
+    nullable: true
+    go_type:
+      type: "float32"
+      pointer: true
+  - db_type: "double"
+    engine: mysql
+    nullable: true
+    go_type:
+      type: "float32"
+      pointer: true
+  - db_type: "longtext"
+    engine: mysql
+    nullable: true
+    go_type:
+      type: "string"
+      pointer: true
+  - db_type: "varchar"
+    engine: mysql
+    nullable: true
+    go_type:
+      type: "string"
+      pointer: true
+  - db_type: "nvarchar"
+    engine: mysql
+    nullable: true
+    go_type:
+      type: "string"
+      pointer: true
+  - db_type: "datetime"
+    engine: mysql
+    nullable: true
+    go_type:
+      import: "time"
+      type: "Time"
+      pointer: true
+  - db_type: "date"
+    engine: mysql
+    nullable: true
+    go_type:
+      import: "time"
+      type: "Time"
+      pointer: true
+  - db_type: "text"
+    engine: mysql
+    nullable: true
+    go_type:
+      type: "string"
+      pointer: true
