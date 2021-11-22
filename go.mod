@@ -8,7 +8,11 @@ require (
 	github.com/jackc/pgx/v4 v4.13.0
 	github.com/joho/godotenv v1.4.0
 	github.com/slack-go/slack v0.10.0
+)
+
+require (
 	github.com/andybalholm/brotli v1.0.2 // indirect
+	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.10.0 // indirect

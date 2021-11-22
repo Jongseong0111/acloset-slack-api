@@ -10,5 +10,5 @@ var (
 )
 
 func Init() {
-	dao = model.New(db.GetConnection().Db)
+	dao = model.New(db.GetConnection().ApiDb)
 }
