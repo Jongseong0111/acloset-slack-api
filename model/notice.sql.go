@@ -139,3 +139,27 @@ func (q *Queries) CountRecentSchedules(ctx context.Context, createDt *time.Time)
 	err := row.Scan(&count)
 	return count, err
 }
+
+const createUserLog = `-- name: CreateUserLog :exec
+INSERT INTO statistic_log (create_date, user_count, clothes_count, outfit_count, post_count, calender_count)
+VALUES (now(), $1, $2, $3, $4, $5)
+`
+
+type CreateUserLogParams struct {
+	UserCount     *int `json:"userCount"`
+	ClothesCount  *int `json:"clothesCount"`
+	OutfitCount   *int `json:"outfitCount"`
+	PostCount     *int `json:"postCount"`
+	CalenderCount *int `json:"calenderCount"`
+}
+
+func (q *Queries) CreateUserLog(ctx context.Context, arg CreateUserLogParams) error {
+	_, err := q.db.Exec(ctx, createUserLog,
+		arg.UserCount,
+		arg.ClothesCount,
+		arg.OutfitCount,
+		arg.PostCount,
+		arg.CalenderCount,
+	)
+	return err
+}

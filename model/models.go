@@ -918,6 +918,16 @@ type SleeveLength struct {
 	ModifyDate      *time.Time `json:"modifyDate"`
 }
 
+type StatisticLog struct {
+	StatisticLogID int32      `json:"statisticLogID"`
+	CreateDate     *time.Time `json:"createDate"`
+	UserCount      *int       `json:"userCount"`
+	ClothesCount   *int       `json:"clothesCount"`
+	OutfitCount    *int       `json:"outfitCount"`
+	PostCount      *int       `json:"postCount"`
+	CalenderCount  *int       `json:"calenderCount"`
+}
+
 type Style struct {
 	StyleID         int32        `json:"styleID"`
 	LocalizedNameID *int         `json:"localizedNameID"`

@@ -19,6 +19,7 @@ type Querier interface {
 	CountRecentRegisteredPosts(ctx context.Context, createDate *time.Time) (int64, error)
 	CountRecentRegisteredUsers(ctx context.Context, createDt *time.Time) (int64, error)
 	CountRecentSchedules(ctx context.Context, createDt *time.Time) (int64, error)
+	CreateUserLog(ctx context.Context, arg CreateUserLogParams) error
 }
 
 var _ Querier = (*Queries)(nil)
