@@ -25,7 +25,7 @@ func DailyNotification(api *slack.Client) {
 	month := int(time.Now().Month())
 	day := time.Now().Day()
 
-	message := fmt.Sprintf("%v년 %v월 %v일 0시 기준 Acloset App 데이터 통계\n\n총 이용자: %v명\n총 등록된 의류: %v개\n총 등록된 코디: %v개\n총 등록된 피드: %v개\n총 등록된 일정: %v번\n\n탈퇴한 유저와 삭제된 의류, 코디, 피드, 일정은 포함하지 않았습니다.",
+	message := fmt.Sprintf("%v년 %v월 %v일 0시 기준 Acloset App 데이터 통계\n\n총 이용자: %v명\n총 등록된 의류: %v개\n총 등록된 코디: %v개\n총 등록된 피드: %v개\n총 등록된 일정: %v번\n\n- 탈퇴한 유저와 삭제된 의류, 코디, 피드, 일정은 포함하지 않았습니다.",
 		year, month, day, humanize.Comma(userCount), humanize.Comma(clothCount), humanize.Comma(outfitCount), humanize.Comma(postCount), humanize.Comma(scheduleCount))
 
 	_, _, err = api.PostMessage(
