@@ -2313,4 +2313,19 @@ SELECT fashion_item.fashion_item_id,
        floor(random() * 1000::double precision) AS score
 FROM fashion_item;
 
+create table statistic_log
+(
+    statistic_log_id integer not null
+        constraint statistic_log_pkey
+            primary key,
+    create_date      timestamp(0),
+    user_count       integer,
+    clothes_count    integer,
+    outfit_count     integer,
+    post_count       integer,
+    calender_count   integer
+);
+
+alter table statistic_log
+    owner to postgres;
 

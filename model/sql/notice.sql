@@ -8,6 +8,9 @@ SELECT count(nua.id)
 FROM nc_usr_account nua
 WHERE nua.del_flag=false AND nua.create_dt>$1;
 
+-- name: CreateUserLog :exec
+INSERT INTO statistic_log (create_dt)
+VALUES ()
 -- name: CountAllClothes :one
 SELECT count(nco.id)
 FROM nc_core_closet nco
