@@ -2,6 +2,10 @@ create sequence fashion_item_seq;
 
 alter sequence fashion_item_seq owner to postgres;
 
+create sequence statistic_log_seq;
+
+alter sequence statistic_log_seq owner to postgres;
+
 create sequence localized_seq;
 
 alter sequence localized_seq owner to postgres;
@@ -2315,7 +2319,7 @@ FROM fashion_item;
 
 create table statistic_log
 (
-    statistic_log_id integer not null
+    statistic_log_id integer default nextval('statistic_log_seq'::regclass) not null
         constraint statistic_log_pkey
             primary key,
     create_date      timestamp(0),
@@ -2328,4 +2332,3 @@ create table statistic_log
 
 alter table statistic_log
     owner to postgres;
-

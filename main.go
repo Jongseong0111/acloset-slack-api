@@ -4,6 +4,7 @@ import (
 	"acloset.slack.api/config"
 	"acloset.slack.api/db"
 	notice "acloset.slack.api/domain/notice"
+	"fmt"
 	"github.com/go-co-op/gocron"
 	"github.com/gofiber/fiber/v2"
 	"github.com/slack-go/slack"
@@ -21,11 +22,12 @@ func main() {
 	app.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.SendString("Hello Go Server")
 	})
-
+	now := time.Now()
+	fmt.Println(now)
 
 	cron := gocron.NewScheduler(time.UTC)
-	cron.Cron("00 03 * * *").Do(func(){notice.DailyNotification(api)})
-	cron.Cron("00 15 * * 7").Do(func(){notice.WeeklyNotification(api)})
+	cron.Cron("*/1 * * * *").Do(func(){notice.DailyNotification(api)})
+	cron.Cron("*/1 * * * *").Do(func(){notice.WeeklyNotification(api)})
 	cron.StartAsync()
 	app.Listen(":3001")
 }

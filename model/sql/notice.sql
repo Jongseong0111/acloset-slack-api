@@ -10,7 +10,7 @@ WHERE nua.del_flag=false AND nua.create_dt>$1;
 
 -- name: CreateUserLog :exec
 INSERT INTO statistic_log (create_date, user_count, clothes_count, outfit_count, post_count, calender_count)
-VALUES (now(), $1, $2, $3, $4, $5);
+VALUES (now() + interval '9 hour', $1, $2, $3, $4, $5);
 
 -- name: CountAllClothes :one
 SELECT count(nco.id)

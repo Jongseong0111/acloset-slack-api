@@ -2,6 +2,7 @@ package service
 
 import (
 	"acloset.slack.api/config"
+	"acloset.slack.api/model"
 	"context"
 	"fmt"
 	"github.com/dustin/go-humanize"
@@ -21,10 +22,30 @@ func DailyNotification(api *slack.Client) {
 	postCount, err     = dao.CountAllPosts(context.Background())
 	scheduleCount, err = dao.CountAllSchedules(context.Background())
 
-	year   := time.Now().Year()
-	month  := int(time.Now().Month())
-	day    := time.Now().Day()
-	recent := time.Now().AddDate(0, 0, -1)
+	userCounta     := int(userCount)
+	clothCounta    := int(clothCount)
+	outfitCounta   := int(outfitCount)
+	postCounta     := int(postCount)
+	scheduleCounta := int(scheduleCount)
+
+
+	param := model.CreateUserLogParams{
+		UserCount: &userCounta,
+		ClothesCount: &clothCounta,
+		OutfitCount: &outfitCounta,
+		PostCount: &postCounta,
+		CalenderCount: &scheduleCounta,
+	}
+	err = dao.CreateUserLog(context.Background(), param)
+	if err != nil {
+		fmt.Printf("%s\n", err)
+	}
+	hour, _ := time.ParseDuration("9h")
+	now    := time.Now()
+	year   := now.Year()
+	month  := int(now.Month())
+	day    := now.Day()
+	recent := now.AddDate(0, 0, -1).Add(-hour)
 
 	userRecentCount, err     := dao.CountRecentRegisteredUsers(context.Background(), &recent)
 	clothRecentCount, err    := dao.CountRecentRegisteredClothes(context.Background(), &recent)
@@ -52,10 +73,17 @@ func WeeklyNotification(api *slack.Client) {
 		userCount, clothCount, outfitCount, postCount, scheduleCount int64
 	)
 
-	year   := time.Now().Year()
-	month  := int(time.Now().Month())
-	day    := time.Now().Day()
-	recent := time.Now().AddDate(0, 0, -7)
+	hour, _ := time.ParseDuration("9h")
+	now := time.Now()
+	year   := now.Year()
+	month  := int(now.Month())
+	day    := now.Day()
+	standard := now.AddDate(0, 0, -7)
+
+	recent := standard.Add(-hour)
+	recentYear := standard.Year()
+	recentMonth := int(standard.Month())
+	recentDay := standard.Day()
 
 	userCount, err    := dao.CountRecentRegisteredUsers(context.Background(), &recent)
 	clothCount, err    = dao.CountRecentRegisteredClothes(context.Background(), &recent)
@@ -63,9 +91,9 @@ func WeeklyNotification(api *slack.Client) {
 	postCount, err     = dao.CountRecentRegisteredPosts(context.Background(), &recent)
 	scheduleCount, err = dao.CountRecentSchedules(context.Background(), &recent)
 
-	message := fmt.Sprintf("%v년 %v월 %v일 기준 Acloset App 데이터 증가분 통계\n\n7일간 가입한 이용자: %v명\n7일간 등록된 의류: %v개\n7일간 등록된 코디: %v개\n7일간 등록된 피드: %v개\n7일간 등록된 일정: %v번\n\n" +
+	message := fmt.Sprintf("Acloset 주차별 주요지표 증가분\n기간: %v년 %v월 %v일 - %v년 %v월 %v일\n\n7일간 가입한 이용자: %v명\n7일간 등록된 의류: %v개\n7일간 등록된 코디: %v개\n7일간 등록된 피드: %v개\n7일간 등록된 일정: %v번\n\n" +
 		"- 탈퇴한 유저는 통계에서 제외합니다.\n- 삭제된 의류, 코디, 게시물, 일정은 포함하지 않습니다.",
-		year, month, day, humanize.Comma(userCount), humanize.Comma(clothCount), humanize.Comma(outfitCount), humanize.Comma(postCount), humanize.Comma(scheduleCount))
+		recentYear, recentMonth, recentDay, year, month, day, humanize.Comma(userCount), humanize.Comma(clothCount), humanize.Comma(outfitCount), humanize.Comma(postCount), humanize.Comma(scheduleCount))
 
 	_, _, err = api.PostMessage(
 		config.Config("SLACK_CHANNEL"),
