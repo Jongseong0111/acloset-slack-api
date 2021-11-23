@@ -64,7 +64,7 @@ func DailyNotification(api *slack.Client) {
 	)
 
 	if err != nil {
-		fmt.Printf("%s\n", err)
+		fmt.Printf("[{%v}], %s\n", time.Now(), err)
 	}
 }
 
@@ -101,6 +101,6 @@ func WeeklyNotification(api *slack.Client) {
 	)
 
 	if err != nil {
-		fmt.Printf("%s\n", err)
+		fmt.Printf("[{%v}], %s\n", time.Now(), err)
 	}
 }
