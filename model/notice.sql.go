@@ -142,7 +142,7 @@ func (q *Queries) CountRecentSchedules(ctx context.Context, createDt *time.Time)
 
 const createUserLog = `-- name: CreateUserLog :exec
 INSERT INTO statistic_log (create_date, user_count, clothes_count, outfit_count, post_count, calender_count)
-VALUES (now(), $1, $2, $3, $4, $5)
+VALUES (now() + interval '9 hour', $1, $2, $3, $4, $5)
 `
 
 type CreateUserLogParams struct {
