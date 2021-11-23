@@ -41,11 +41,11 @@ func DailyNotification(api *slack.Client) {
 		fmt.Printf("%s\n", err)
 	}
 	hour, _ := time.ParseDuration("9h")
-	now    := time.Now()
-	year   := now.Year()
-	month  := int(now.Month())
-	day    := now.Day()
-	recent := now.AddDate(0, 0, -1).Add(-hour)
+	now     := time.Now()
+	year    := now.Year()
+	month   := int(now.Month())
+	day     := now.Day()
+	recent  := now.AddDate(0, 0, -1).Add(-hour)
 
 	userRecentCount, err     := dao.CountRecentRegisteredUsers(context.Background(), &recent)
 	clothRecentCount, err    := dao.CountRecentRegisteredClothes(context.Background(), &recent)
@@ -74,16 +74,16 @@ func WeeklyNotification(api *slack.Client) {
 	)
 
 	hour, _ := time.ParseDuration("9h")
-	now := time.Now()
+	now := time.Now().AddDate(0, 0, -1)
 	year   := now.Year()
 	month  := int(now.Month())
 	day    := now.Day()
-	standard := now.AddDate(0, 0, -7)
+	standard := now.AddDate(0, 0, -6)
 
-	recent := standard.Add(-hour)
-	recentYear := standard.Year()
+	recent      := standard.Add(-hour)
+	recentYear  := standard.Year()
 	recentMonth := int(standard.Month())
-	recentDay := standard.Day()
+	recentDay   := standard.Day()
 
 	userCount, err    := dao.CountRecentRegisteredUsers(context.Background(), &recent)
 	clothCount, err    = dao.CountRecentRegisteredClothes(context.Background(), &recent)
