@@ -4,6 +4,8 @@ package model
 
 import (
 	"context"
+
+	"time"
 )
 
 type Querier interface {
@@ -12,11 +14,11 @@ type Querier interface {
 	CountAllPosts(ctx context.Context) (int64, error)
 	CountAllSchedules(ctx context.Context) (int64, error)
 	CountAllUsers(ctx context.Context) (int64, error)
-	CountRecentRegisteredClothes(ctx context.Context) (int64, error)
-	CountRecentRegisteredOutfits(ctx context.Context) (int64, error)
-	CountRecentRegisteredPosts(ctx context.Context) (int64, error)
-	CountRecentRegisteredUsers(ctx context.Context) (int64, error)
-	CountRecentSchedules(ctx context.Context) (int64, error)
+	CountRecentRegisteredClothes(ctx context.Context, createDt *time.Time) (int64, error)
+	CountRecentRegisteredOutfits(ctx context.Context, createDt *time.Time) (int64, error)
+	CountRecentRegisteredPosts(ctx context.Context, createDate *time.Time) (int64, error)
+	CountRecentRegisteredUsers(ctx context.Context, createDt *time.Time) (int64, error)
+	CountRecentSchedules(ctx context.Context, createDt *time.Time) (int64, error)
 }
 
 var _ Querier = (*Queries)(nil)

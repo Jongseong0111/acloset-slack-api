@@ -5,6 +5,8 @@ package model
 
 import (
 	"context"
+
+	"time"
 )
 
 const countAllClothes = `-- name: CountAllClothes :one
@@ -75,11 +77,11 @@ func (q *Queries) CountAllUsers(ctx context.Context) (int64, error) {
 const countRecentRegisteredClothes = `-- name: CountRecentRegisteredClothes :one
 SELECT count(nco.id)
 FROM nc_core_closet nco
-WHERE nco.del_flag=false AND nco.use_flag=true AND nco.create_dt>(now() - interval '7 day')
+WHERE nco.del_flag=false AND nco.use_flag=true AND nco.create_dt>$1
 `
 
-func (q *Queries) CountRecentRegisteredClothes(ctx context.Context) (int64, error) {
-	row := q.db.QueryRow(ctx, countRecentRegisteredClothes)
+func (q *Queries) CountRecentRegisteredClothes(ctx context.Context, createDt *time.Time) (int64, error) {
+	row := q.db.QueryRow(ctx, countRecentRegisteredClothes, createDt)
 	var count int64
 	err := row.Scan(&count)
 	return count, err
@@ -89,11 +91,11 @@ const countRecentRegisteredOutfits = `-- name: CountRecentRegisteredOutfits :one
 
 SELECT count(nco.id)
 FROM nc_core_outfit nco
-WHERE nco.del_flag=false AND nco.use_flag=true AND nco.create_dt>(now() - interval '7 day')
+WHERE nco.del_flag=false AND nco.use_flag=true AND nco.create_dt>$1
 `
 
-func (q *Queries) CountRecentRegisteredOutfits(ctx context.Context) (int64, error) {
-	row := q.db.QueryRow(ctx, countRecentRegisteredOutfits)
+func (q *Queries) CountRecentRegisteredOutfits(ctx context.Context, createDt *time.Time) (int64, error) {
+	row := q.db.QueryRow(ctx, countRecentRegisteredOutfits, createDt)
 	var count int64
 	err := row.Scan(&count)
 	return count, err
@@ -102,11 +104,11 @@ func (q *Queries) CountRecentRegisteredOutfits(ctx context.Context) (int64, erro
 const countRecentRegisteredPosts = `-- name: CountRecentRegisteredPosts :one
 SELECT count(post.post_id)
 FROM post
-WHERE post.is_delete=false AND post.create_date>(now() - interval '7 day')
+WHERE post.is_delete=false AND post.create_date>$1
 `
 
-func (q *Queries) CountRecentRegisteredPosts(ctx context.Context) (int64, error) {
-	row := q.db.QueryRow(ctx, countRecentRegisteredPosts)
+func (q *Queries) CountRecentRegisteredPosts(ctx context.Context, createDate *time.Time) (int64, error) {
+	row := q.db.QueryRow(ctx, countRecentRegisteredPosts, createDate)
 	var count int64
 	err := row.Scan(&count)
 	return count, err
@@ -115,11 +117,11 @@ func (q *Queries) CountRecentRegisteredPosts(ctx context.Context) (int64, error)
 const countRecentRegisteredUsers = `-- name: CountRecentRegisteredUsers :one
 SELECT count(nua.id)
 FROM nc_usr_account nua
-WHERE nua.del_flag=false AND nua.create_dt>(now() - interval '7 day')
+WHERE nua.del_flag=false AND nua.create_dt>$1
 `
 
-func (q *Queries) CountRecentRegisteredUsers(ctx context.Context) (int64, error) {
-	row := q.db.QueryRow(ctx, countRecentRegisteredUsers)
+func (q *Queries) CountRecentRegisteredUsers(ctx context.Context, createDt *time.Time) (int64, error) {
+	row := q.db.QueryRow(ctx, countRecentRegisteredUsers, createDt)
 	var count int64
 	err := row.Scan(&count)
 	return count, err
@@ -128,11 +130,11 @@ func (q *Queries) CountRecentRegisteredUsers(ctx context.Context) (int64, error)
 const countRecentSchedules = `-- name: CountRecentSchedules :one
 SELECT count(nus.id)
 FROM nc_usr_schedule nus
-WHERE nus.del_flag=false AND nus.use_flag=true AND nus.create_dt>(now() - interval '7 day')
+WHERE nus.del_flag=false AND nus.use_flag=true AND nus.create_dt>$1
 `
 
-func (q *Queries) CountRecentSchedules(ctx context.Context) (int64, error) {
-	row := q.db.QueryRow(ctx, countRecentSchedules)
+func (q *Queries) CountRecentSchedules(ctx context.Context, createDt *time.Time) (int64, error) {
+	row := q.db.QueryRow(ctx, countRecentSchedules, createDt)
 	var count int64
 	err := row.Scan(&count)
 	return count, err
