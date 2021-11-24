@@ -40,12 +40,14 @@ func DailyNotification(api *slack.Client) {
 	if err != nil {
 		fmt.Printf("%s\n", err)
 	}
+
 	hour, _ := time.ParseDuration("9h")
 	now     := time.Now()
 	today	:= now.Add(+hour)
 	year    := today.Year()
 	month   := int(today.Month())
 	day     := today.Day()
+	weekDay := printDay(today.Weekday())
 
 	recent  := now.AddDate(0, 0, -1)
 
@@ -55,9 +57,10 @@ func DailyNotification(api *slack.Client) {
 	postRecentCount, err     := dao.CountRecentRegisteredPosts(context.Background(), &recent)
 	scheduleRecentCount, err := dao.CountRecentSchedules(context.Background(), &recent)
 
-	message := fmt.Sprintf("%v년 %v월 %v일 0시 기준 Acloset App 데이터 통계\n\n총 이용자: %v명 (+%v)\n총 등록된 의류: %v개 (+%v)\n총 등록된 코디: %v개 (+%v)\n총 등록된 피드: %v개 (+%v)\n총 등록된 일정: %v번 (+%v)\n\n" +
+	message := fmt.Sprintf("%v년 %v월 %v일 %v요일 0시 기준 \n" +
+		"Acloset App 주요지표 통계\n\n총 이용자: %v명 (+%v)\n총 등록된 의류: %v개 (+%v)\n총 등록된 코디: %v개 (+%v)\n총 등록된 피드: %v개 (+%v)\n총 등록된 일정: %v번 (+%v)\n\n" +
 		"- 탈퇴한 유저는 통계에서 제외합니다.\n- 삭제된 의류, 코디, 게시물, 일정은 포함하지 않습니다.",
-		year, month, day, humanize.Comma(userCount), humanize.Comma(userRecentCount), humanize.Comma(clothCount), humanize.Comma(clothRecentCount),
+		year, month, day, weekDay, humanize.Comma(userCount), humanize.Comma(userRecentCount), humanize.Comma(clothCount), humanize.Comma(clothRecentCount),
 		humanize.Comma(outfitCount), humanize.Comma(outfitRecentCount), humanize.Comma(postCount), humanize.Comma(postRecentCount),humanize.Comma(scheduleCount), humanize.Comma(scheduleRecentCount))
 
 	_, _, err = api.PostMessage(
@@ -75,14 +78,13 @@ func WeeklyNotification(api *slack.Client) {
 		userCount, clothCount, outfitCount, postCount, scheduleCount int64
 	)
 
-	hour, _ := time.ParseDuration("9h")
 	now     := time.Now()
 	year    := now.Year()
 	month   := int(now.Month())
 	day     := now.Day()
 	standard := now.AddDate(0, 0, -7)
 
-	recent      := standard.Add(+hour)
+	recent      := standard.AddDate(0, 0, 1)
 	recentYear  := recent.Year()
 	recentMonth := int(recent.Month())
 	recentDay   := recent.Day()
@@ -105,4 +107,24 @@ func WeeklyNotification(api *slack.Client) {
 	if err != nil {
 		fmt.Printf("[{%v}], %s\n", time.Now(), err)
 	}
+}
+
+func printDay(day time.Weekday) (weekday string){
+	switch day {
+	case time.Monday:
+		return "월"
+	case time.Tuesday:
+		return "화"
+	case time.Wednesday:
+		return "수"
+	case time.Thursday:
+		return "목"
+	case time.Friday:
+		return "금"
+	case time.Saturday:
+		return "토"
+	case time.Sunday:
+		return "일"
+	}
+	return
 }
