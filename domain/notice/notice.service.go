@@ -42,10 +42,12 @@ func DailyNotification(api *slack.Client) {
 	}
 	hour, _ := time.ParseDuration("9h")
 	now     := time.Now()
-	year    := now.Year()
-	month   := int(now.Month())
-	day     := now.Day()
-	recent  := now.AddDate(0, 0, -1).Add(-hour)
+	today	:= now.Add(+hour)
+	year    := today.Year()
+	month   := int(today.Month())
+	day     := today.Day()
+
+	recent  := now.AddDate(0, 0, -1)
 
 	userRecentCount, err     := dao.CountRecentRegisteredUsers(context.Background(), &recent)
 	clothRecentCount, err    := dao.CountRecentRegisteredClothes(context.Background(), &recent)
@@ -74,22 +76,22 @@ func WeeklyNotification(api *slack.Client) {
 	)
 
 	hour, _ := time.ParseDuration("9h")
-	now := time.Now().AddDate(0, 0, -1)
-	year   := now.Year()
-	month  := int(now.Month())
-	day    := now.Day()
-	standard := now.AddDate(0, 0, -6)
+	now     := time.Now()
+	year    := now.Year()
+	month   := int(now.Month())
+	day     := now.Day()
+	standard := now.AddDate(0, 0, -7)
 
-	recent      := standard.Add(-hour)
-	recentYear  := standard.Year()
-	recentMonth := int(standard.Month())
-	recentDay   := standard.Day()
+	recent      := standard.Add(+hour)
+	recentYear  := recent.Year()
+	recentMonth := int(recent.Month())
+	recentDay   := recent.Day()
 
-	userCount, err    := dao.CountRecentRegisteredUsers(context.Background(), &recent)
-	clothCount, err    = dao.CountRecentRegisteredClothes(context.Background(), &recent)
-	outfitCount, err   = dao.CountRecentRegisteredOutfits(context.Background(), &recent)
-	postCount, err     = dao.CountRecentRegisteredPosts(context.Background(), &recent)
-	scheduleCount, err = dao.CountRecentSchedules(context.Background(), &recent)
+	userCount, err    := dao.CountRecentRegisteredUsers(context.Background(), &standard)
+	clothCount, err    = dao.CountRecentRegisteredClothes(context.Background(), &standard)
+	outfitCount, err   = dao.CountRecentRegisteredOutfits(context.Background(), &standard)
+	postCount, err     = dao.CountRecentRegisteredPosts(context.Background(), &standard)
+	scheduleCount, err = dao.CountRecentSchedules(context.Background(), &standard)
 
 	message := fmt.Sprintf("Acloset 주차별 주요지표 증가분\n기간: %v년 %v월 %v일 - %v년 %v월 %v일\n\n7일간 가입한 이용자: %v명\n7일간 등록된 의류: %v개\n7일간 등록된 코디: %v개\n7일간 등록된 피드: %v개\n7일간 등록된 일정: %v번\n\n" +
 		"- 탈퇴한 유저는 통계에서 제외합니다.\n- 삭제된 의류, 코디, 게시물, 일정은 포함하지 않습니다.",
