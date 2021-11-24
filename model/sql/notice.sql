@@ -23,15 +23,15 @@ FROM nc_core_closet nco
 WHERE nco.del_flag=false AND nco.use_flag=true AND nco.create_dt>$1;
 
 -- name: CountAllOutfits :one
-SELECT count(nco.id)
-FROM nc_core_outfit nco
-WHERE nco.del_flag=false AND nco.use_flag=true;
+SELECT count(ncs.id)
+FROM nc_core_style ncs
+WHERE ncs.del_flag=false AND ncs.use_flag=true;
 
 -- name: CountRecentRegisteredOutfits :one
 
-SELECT count(nco.id)
-FROM nc_core_outfit nco
-WHERE nco.del_flag=false AND nco.use_flag=true AND nco.create_dt>$1;
+SELECT count(ncs.id)
+FROM nc_core_style ncs
+WHERE ncs.del_flag=false AND ncs.use_flag=true AND ncs.create_dt>$1;
 
 -- name: CountAllPosts :one
 SELECT count(post.post_id)
