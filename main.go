@@ -31,8 +31,8 @@ func main() {
 	}))
 
 	cron := gocron.NewScheduler(time.UTC)
-	cron.Cron("*/1 * * * *").Do(func(){notice.DailyNotification(api)})
-	cron.Cron("*/1 * * * *").Do(func(){notice.WeeklyNotification(api)})
+	cron.Cron("00 15 * * *").Do(func(){notice.DailyNotification(api)})
+	cron.Cron("00 15 * * 0").Do(func(){notice.WeeklyNotification(api)})
 	cron.StartAsync()
 	app.Listen(":3001")
 }
