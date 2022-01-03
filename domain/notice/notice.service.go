@@ -75,7 +75,7 @@ func DailyNotification(api *slack.Client) {
 
 func WeeklyNotification(api *slack.Client) {
 	var (
-		userCount, clothCount, outfitCount, postCount, scheduleCount int64
+		userCount, clothesCount, outfitCount, postCount, scheduleCount int64
 	)
 
 	now     := time.Now()
@@ -90,14 +90,14 @@ func WeeklyNotification(api *slack.Client) {
 	recentDay   := recent.Day()
 
 	userCount, err    := dao.CountRecentRegisteredUsers(context.Background(), &standard)
-	clothCount, err    = dao.CountRecentRegisteredClothes(context.Background(), &standard)
+	clothesCount, err    = dao.CountRecentRegisteredClothes(context.Background(), &standard)
 	outfitCount, err   = dao.CountRecentRegisteredOutfits(context.Background(), &standard)
 	postCount, err     = dao.CountRecentRegisteredPosts(context.Background(), &standard)
 	scheduleCount, err = dao.CountRecentSchedules(context.Background(), &standard)
 
 	message := fmt.Sprintf("Acloset 주차별 주요지표 증가분\n기간: %v년 %v월 %v일 - %v년 %v월 %v일\n\n7일간 가입한 이용자: %v명\n7일간 등록된 의류: %v개\n7일간 등록된 코디: %v개\n7일간 등록된 피드: %v개\n7일간 등록된 일정: %v번\n\n" +
 		"- 탈퇴한 유저는 통계에서 제외합니다.\n- 삭제된 의류, 코디, 게시물, 일정은 포함하지 않습니다.",
-		recentYear, recentMonth, recentDay, year, month, day, humanize.Comma(userCount), humanize.Comma(clothCount), humanize.Comma(outfitCount), humanize.Comma(postCount), humanize.Comma(scheduleCount))
+		recentYear, recentMonth, recentDay, year, month, day, humanize.Comma(userCount), humanize.Comma(clothesCount), humanize.Comma(outfitCount), humanize.Comma(postCount), humanize.Comma(scheduleCount))
 
 	_, _, err = api.PostMessage(
 		config.Config("SLACK_CHANNEL"),
